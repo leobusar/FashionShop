@@ -1,13 +1,16 @@
-const debug = require('debug')('shoppingcart:server');
+const debug = require('debug')('shoppingcart:product-controller');
 const Product = require('../models/Product');
 
 /**
- * Get user.
- * @property {string} id - The id of product.
+ * Get Product.
+ * @property {string} req.params.id - The id of product.
+ * @returns {Product}
  */
 
-exports.get = (req, res, next, id) => {
-  Product.get(id)
+exports.get = (req, res) => {
+  const { id } = req.params;
+
+  Product.findById(id)
     .then((product) => res.json(product))
     .catch((err) => {
       debug(`Error: ${err.message}`);
@@ -48,6 +51,7 @@ exports.create = (req, res, next) => {
 
 /**
  * Update existing product
+ * @property {string} req.params.id - The id of product.
  * @property {string} req.body.name - The name of product.
  * @property {string} req.body.category - The category of product.
  * @property {string} req.body.brand - The brand of product.
@@ -56,24 +60,25 @@ exports.create = (req, res, next) => {
  * @property {string} req.body.specs - The specs of product.
  * @returns {Product}
  */
-exports.update = (req, res, next, id) => {
-  Product.get(id)
-    .then((prod) => {
-    // return res.json(product);
-      const product = prod;
-      product.name = req.body.name ? req.body.name : product.name;
-      product.brand = req.body.brand ? req.body.brand : product.brand;
-      product.category = req.body.category ? req.body.category : product.category;
-      product.model = req.body.model ? req.body.model : product.model;
-      product.specs = req.body.specs ? req.body.specs : product.specs;
-      product.quantity = req.body.quantity ? req.body.quantity : product.quantity;
-      product.price = req.body.price ? req.body.price : product.price;
+exports.update = (req, res, next) => {
+  const { id } = req.params;
 
-      product
-        .save()
-        .then((savedProduct) => res.json(savedProduct))
-        .catch((e) => next(e));
-    })
+  Product.findById(id).then((prod) => {
+    // return res.json(product);
+    const product = prod;
+    product.name = req.body.name ? req.body.name : product.name;
+    product.brand = req.body.brand ? req.body.brand : product.brand;
+    product.category = req.body.category ? req.body.category : product.category;
+    product.model = req.body.model ? req.body.model : product.model;
+    product.specs = req.body.specs ? req.body.specs : product.specs;
+    product.quantity = req.body.quantity ? req.body.quantity : product.quantity;
+    product.price = req.body.price ? req.body.price : product.price;
+
+    product
+      .save()
+      .then((savedProduct) => res.json(savedProduct))
+      .catch((e) => next(e));
+  })
     .catch((err) => {
       debug(`Error: ${err.message}`);
       return res.status(404).send({ error: err.message });
@@ -81,7 +86,9 @@ exports.update = (req, res, next, id) => {
 };
 
 /**
- * Get user list.
+ * Get products list.
+ * @property {string} req.query.sort - Field to sort.
+ * @property {string} req.query.order - Order of products.
  * @property {number} req.query.skip - Number of products to be skipped.
  * @property {number} req.query.limit - Limit number of products to be returned.
  * @returns {Product[]}
@@ -109,12 +116,14 @@ exports.list = (req, res, next) => {
 
 /**
  * Delete Product.
- * @returns {Product}
+ * @property {string} req.params.id - The id of product.
+ * @returns {num_rows_affected}
  */
 exports.remove = (req, res, next) => {
-  const { product } = req;
-  product
+  const { id } = req.params;
+
+  Product.findById(id)
     .remove()
-    .then((deletedProduct) => res.json(deletedProduct))
+    .then((product) => res.json(product))
     .catch((e) => next(e));
 };
