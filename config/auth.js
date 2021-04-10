@@ -1,4 +1,7 @@
+'use strict'
+
 const jwt = require('jsonwebtoken');
+
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
@@ -20,5 +23,8 @@ function authenticateToken(req, res, next) {
     jwtMiddleware: authenticateToken
   };
 
+function generateAccessToken(username) {
+  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: config.jwtExpiresIn });
+}
 
-module.exports.config 
+module.exports = {config,  authenticateToken, generateAccessToken}
