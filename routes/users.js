@@ -1,13 +1,11 @@
 const express = require('express');
 
 const router = express.Router();
+const UserController = require('../controllers/UserController');
+
 // AuthController
 
-/* GET users listing. */
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  res.send(`respond with a resource${username} ${password}`);
-});
+/* GET /users - Users listing. */
+router.get('/', UserController.list);
 
 module.exports = router;

@@ -21,6 +21,7 @@ const config = {
   jwtExpiresIn: 86400,
   jwtAuth: authenticateToken,
   mongoUri: process.env.MONGO_URI,
+  secret: process.env.TOKEN_SECRET,
 };
 
 function generateAccessToken(username) {

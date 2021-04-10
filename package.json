@@ -9,6 +9,7 @@
     "lint-fix": "eslint --fix config/*.js  models/*.js routes/*.js controllers/*.js "
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
