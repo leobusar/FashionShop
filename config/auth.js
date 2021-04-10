@@ -19,7 +19,8 @@ function authenticateToken(req, res) {
 const config = {
   env: process.env.NODE_ENV,
   jwtExpiresIn: 86400,
-  jwtMiddleware: authenticateToken,
+  jwtAuth: authenticateToken,
+  mongoUri: process.env.MONGO_URI,
 };
 
 function generateAccessToken(username) {

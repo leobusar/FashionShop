@@ -15,10 +15,6 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
-  model: {
-    type: String,
-  },
-  specification: String,
   price: {
     type: Number,
     required: true,
@@ -27,6 +23,7 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  specs: String,
   createdAt: {
     type: Date,
     default: Date.now,
