@@ -19,7 +19,7 @@ exports.list = (req, res, next) => {
 
   const orderM = order === 'desc' ? -1 : 1;
 
-  User.find(condition, { password: 0 })
+  User.find(condition)
     .limit(limit)
     .skip(skip)
     .sort({ [sort]: orderM })

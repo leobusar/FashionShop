@@ -1,13 +1,13 @@
-## Fashion Shop
+# Fashion Shop
 Api Written in javascript, using nodejs, express to store products and manage the shopping cart. I'm using mongodb as a database.
 
-# Models
+## Models
 Three models to data persistence
 1. User. This model represents the users. This user is necessary to authenticate the access to administer products and cart (it allows add or remove products in the cart).
 2. Product.  This model represents the products. 
 3. Cart.  This model contains two schemas:  first is the definition of product_item {product_id, quantity} (qty is the quantity the products with product_id  are in the cart). second is the definition of cart that contains {username, items} (username is the owner of the cart and items is the array that contains the product_items in the cart)
 
-# Controllers
+## Controllers
 There are five controllers to manage the business logic.
 
 1. UserController. This controller only lists users.
@@ -22,6 +22,6 @@ There are five controllers to manage the business logic.
 
 5. CsvController.  This controller contains the methods to receive csv files to load products and users.
 
-# Routes
+## Routes
 There are four files to declare the routes to use the methods in controllers.  Routes to change data need authentication. 
 

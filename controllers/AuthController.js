@@ -6,21 +6,28 @@ const User = require('../models/User');
 
 exports.register = (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
-  User.create({
-    name: req.body.name,
-    username: req.body.username,
-    password: hashedPassword,
-  },
-  (err, user) => {
-    if (err) return res.status(500).send('There was a problem registering the user.');
-    // create a token
-    const token = jwt.sign(
-      { username: user.username },
-      auth.config.secret,
-      { expiresIn: auth.config.jwtExpiresIn },
-    );
-    return res.status(200).send({ auth: true, token });
-  });
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      if (user) {
+        throw new Error('Email has already been taken');
+      } else {
+        User.create({
+          name: req.body.name,
+          username: req.body.username,
+          password: hashedPassword,
+        },
+        (err, userNew) => {
+          if (err) return res.status(500).send('There was a problem registering the user.');
+          // create a token
+          const token = jwt.sign(
+            { username: userNew.username },
+            auth.config.secret,
+            { expiresIn: auth.config.jwtExpiresIn },
+          );
+          return res.status(200).send({ auth: true, token });
+        });
+      }
+    });
 };
 
 exports.login = (req, res) => {

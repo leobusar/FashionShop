@@ -1,4 +1,8 @@
 const express = require('express');
+const multer = require('multer');
+
+const upload = multer({ dest: 'tmp/' });
+
 const auth = require('../config/auth');
 
 const router = express.Router();
@@ -21,6 +25,6 @@ router.put('/:id', auth.config.jwtAuth, ProductController.update);
 router.delete('/:id', auth.config.jwtAuth, ProductController.remove);
 
 /** POST /api/products/upload - Upload csv files with products */
-router.post('/upload', CsvController.csvProducts);
+router.post('/upload', upload.single('csvFile'), CsvController.csvProducts);
 
 module.exports = router;
