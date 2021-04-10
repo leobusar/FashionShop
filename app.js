@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 });
 
 // Express Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   debug(`Error: ${err.message}`)
 
   if (err.message.match(/Not Found/)) {
