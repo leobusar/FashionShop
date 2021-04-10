@@ -1,3 +1,4 @@
+/* eslint consistent-return: off */
 const debug = require('debug')('shoppingcart:cart-controller');
 const Cart = require('../models/Cart');
 
@@ -14,7 +15,9 @@ const Cart = require('../models/Cart');
  */
 
 exports.update = (req, res) => {
-  const { username, productId } = req.body;
+  const { username } = req.user; // get the username from session
+
+  const { productId } = req.body;
   const qty = Number.parseInt(req.body.qty, 10);
   if (qty < 0) return res.status(400).send({ error: 'Quantity must be greater than 0' });
 
@@ -64,7 +67,7 @@ exports.update = (req, res) => {
  */
 
 exports.get = (req, res) => {
-  const { username } = req.body;
+  const { username } = req.user; // get the username from session
 
   Cart.findOne({ username })
     .then((cart) => res.json(cart))

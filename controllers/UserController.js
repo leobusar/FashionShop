@@ -19,10 +19,13 @@ exports.list = (req, res, next) => {
 
   const orderM = order === 'desc' ? -1 : 1;
 
-  User.find(condition)
+  User.find(condition, { password: 0 })
     .limit(limit)
     .skip(skip)
     .sort({ [sort]: orderM })
     .then((products) => res.json(products))
-    .catch((e) => next(e));
+    .catch((e) => {
+      debug(`Error: ${e.message}`);
+      next(e);
+    });
 };

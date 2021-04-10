@@ -125,5 +125,8 @@ exports.remove = (req, res, next) => {
   Product.findById(id)
     .remove()
     .then((product) => res.json(product))
-    .catch((e) => next(e));
+    .catch((e) => {
+      debug(`Error: ${e.message}`);
+      next(e);
+    });
 };
