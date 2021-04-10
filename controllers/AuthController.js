@@ -22,3 +22,26 @@ exports.register = (req, res) => {
     return res.status(200).send({ auth: true, token });
   });
 };
+
+
+exports.login = (req, res) => {
+
+
+    User.findOne({
+      username: req.body.username,
+    },
+    (err, user) => {
+      if (err) return res.status(500).send('There was a problem registering the user.');
+      if (!user) return  res.status(401).send({ auth: false, token: null });
+      var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+      if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+
+      // create a token
+      const token = jwt.sign(
+        { username: user.username },
+        auth.config.secret,
+        { expiresIn: auth.config.jwtExpiresIn },
+      );
+      return res.status(200).send({ auth: true, token });
+    });
+  };
