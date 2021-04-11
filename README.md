@@ -1,5 +1,7 @@
 # Fashion Shop
+
 Api Written in javascript, using nodejs, express to store products and manage the shopping cart. I'm using mongodb as a database.
+demo version:  [Heroku](https://fashion-shop-lt.herokuapp.com/)
 
 ## Models
 Three models to data persistence
@@ -25,3 +27,76 @@ There are five controllers to manage the business logic.
 ## Routes
 There are four files to declare the routes to use the methods in controllers.  Routes to change data need authentication. 
 
+### Auth 
+- auth/register: 
+    - method:post 
+    - parameters: {name:string, username:string, password:string }
+    - description: register a new user
+
+- auth/login:
+    - method:post 
+    - parameters: {username:string, password:string }
+    - description: authenticate user, returns token or err message
+
+### Cart
+- cart/update: 
+    - authenticated
+    - method: post
+    - parameters: { product_id:string, qty:number >= 0 }
+    - description: update cart using rules described in controllers
+
+- cart:
+    - authenticated
+    - parameters: {}
+    - method: post
+    - description: returns shopping cart detail
+
+### Products
+- products:
+    - method: get 
+    - parameters: optional { brand:string, category:string, sort:string(defaults:createdAt), 
+                             order:{1, -1}, skip:number(defaults:0), limit:number(defaults:50) }
+    - description: get list of products.
+
+- products:
+    - method: post  
+    - parameters: { name:string, category:string, brand:string, price:number, quantity:string }
+                  optional { specs: string }
+    - description: create a new product
+
+- products/:id :
+    - method: put  
+    - parameters: { name:string, category:string, brand:string, price:number, quantity:string }
+                  optional { specs: string }
+                  url {id:string}
+    - description: update new product
+
+- products/:id :
+    - method: get  
+    - parameters: url {id:string}
+    - description: get product details
+
+- products/:id :
+    - method: delete  
+    - parameters: url {id:string}
+    - description: hard delete of product
+    
+- products/upload:
+    - method: post
+    - parameters: {csvFile:file}
+    - description: 
+        - file must contain this values "name,brand,category,price,quantity", 
+        - first row must contain the names of column.
+
+### Users 
+- users:
+    - method: get 
+    - parameters: {}
+    - description: get list of products.
+
+- users/upload:
+    - method: post
+    - parameters: {csvFile:file}
+    - description: 
+        - file must contain this values "name,username,password", 
+        - first row must contain the names of column.

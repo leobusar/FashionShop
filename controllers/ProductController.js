@@ -96,7 +96,7 @@ exports.update = (req, res, next) => {
 exports.list = (req, res, next) => {
   // console.log(req.query);
   const {
-    category = '', brand = '', sort = 'quantity', order = 'desc', limit = 50, skip = 0,
+    category = '', brand = '', sort = 'createdAt', order = 'desc', limit = 50, skip = 0,
   } = req.query;
 
   let condition;
