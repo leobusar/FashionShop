@@ -1,5 +1,7 @@
 /* eslint consistent-return: off */
 const debug = require('debug')('shoppingcart:cart-controller');
+const Joi = require('joi');
+
 const Cart = require('../models/Cart');
 
 /**
@@ -76,3 +78,19 @@ exports.get = (req, res) => {
       return res.status(400).send({ error: 'Invalid Request' });
     });
 };
+
+/**
+ * Schema to validate params
+ */
+exports.schema = Joi.object({
+  productId: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(30)
+    .required(),
+
+  qty: Joi.number()
+    .min(0)
+    .required(),
+
+});

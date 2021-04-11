@@ -1,4 +1,5 @@
 const debug = require('debug')('shoppingcart:user-controller');
+const Joi = require('joi');
 const User = require('../models/User');
 
 /**
@@ -29,3 +30,19 @@ exports.list = (req, res, next) => {
       next(e);
     });
 };
+
+exports.schema = Joi.object({
+  username: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(30)
+    .required(),
+
+  password: Joi.string()
+    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    .required(),
+
+  name: Joi.string()
+    .min(3)
+    .max(30),
+});

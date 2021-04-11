@@ -1,4 +1,5 @@
 const debug = require('debug')('shoppingcart:product-controller');
+const Joi = require('joi');
 const Product = require('../models/Product');
 
 /**
@@ -130,3 +131,21 @@ exports.remove = (req, res, next) => {
       next(e);
     });
 };
+
+/**
+ * Schema to validate params
+ */
+exports.schema = Joi.object({
+  name: Joi.string()
+    .required(),
+  category: Joi.string()
+    .required(),
+  brand: Joi.string()
+    .required(),
+  model: Joi.string(),
+  price: Joi.number()
+    .required(),
+  quantity: Joi.number()
+    .required(),
+
+});

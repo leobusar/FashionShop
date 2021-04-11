@@ -1,32 +1,36 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const debug = require('debug')('shoppingcart:auth-controller');
 
 const auth = require('../config/auth');
 const User = require('../models/User');
 
 exports.register = (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
-  User.findOne({ email: req.body.email })
-    .then((user) => {
+  User.findOne({ username: req.body.username })
+    .then((user) => { /* eslint consistent-return: off */
       if (user) {
-        throw new Error('Email has already been taken');
-      } else {
-        User.create({
-          name: req.body.name,
-          username: req.body.username,
-          password: hashedPassword,
-        },
-        (err, userNew) => {
-          if (err) return res.status(500).send('There was a problem registering the user.');
-          // create a token
-          const token = jwt.sign(
-            { username: userNew.username },
-            auth.config.secret,
-            { expiresIn: auth.config.jwtExpiresIn },
-          );
-          return res.status(200).send({ auth: true, token });
-        });
+        return res.status(500).send('Username is already taken');
       }
+      User.create({
+        name: req.body.name,
+        username: req.body.username,
+        password: hashedPassword,
+      },
+      (err, userNew) => {
+        if (err) return res.status(500).send('There was a problem registering the user.');
+        // create a token
+        const token = jwt.sign(
+          { username: userNew.username },
+          auth.config.secret,
+          { expiresIn: auth.config.jwtExpiresIn },
+        );
+        return res.status(200).send({ auth: true, token });
+      });
+    }).catch((error) => {
+      debug(`Error: ${error.message}`);
+
+      return res.status(500).send(`There was a problem registering the user: ${error.messsage}`);
     });
 };
 
