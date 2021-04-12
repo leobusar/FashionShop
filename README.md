@@ -16,11 +16,11 @@ There are five controllers to manage the business logic.
 2. AuthController. This controller has two methods to register and login users. It uses the JWT to create the token and maintain the session.
 3. ProductController. This controller contains the methods to manage the products.  It allows to create, list, update, delete and get details of the products.  
 4. CartController. This controller contains the methods to get details of the cart and update products in the cart. The method update receives three arguments: username is the cart's owner, product_id and qty. There are five cases:
-    a. If qty < 0, there is an error.  quantity cannot be less than zero.
-    b. If qty === 0, and the cart does not exists, there is an error.  quantity cannot be equals to zero.
-    c. If qty === 0, and the cart exists, the product with product_id is removed from the cart.
-    d. If qty > 0, and the cart exists, the product with product_id is updated in the cart.
-    e. If qty > 0, and the cart not exists, the cart is created with this product and quantity.
+    - If qty < 0, there is an error.  quantity cannot be less than zero.
+    - If qty === 0, and the cart does not exists, there is an error.  quantity cannot be equals to zero.
+    - If qty === 0, and the cart exists, the product with product_id is removed from the cart.
+    - If qty > 0, and the cart exists, the product with product_id is updated in the cart.
+    - If qty > 0, and the cart not exists, the cart is created with this product and quantity.
 
 5. CsvController.  This controller contains the methods to receive csv files to load products and users.
 
